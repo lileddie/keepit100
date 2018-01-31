@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Keep it 100</title>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="600"> <!-- Refresh every 10 minutes -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.ico"></script>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link href="../static/main.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="jumbotron text-center">
+    <span id="leftlinks"><a id="linkspace" href="/">Current Status</a><a id="linkspace" href="/view">View Monitors</a><a id="linkspace" href="addmonitor">Add Monitor</a><a id="linkspace" href="delmonitor">Delete Monitor</a><a id="linkspace" href="details">Detailed Monitor</a><a id="linkspace" href="/about">About</a></span>
+      <h1>Keep it <img src="../static/hundred.png" class="img-fluid" alt="a hundred">
+  <p>Monitoring The Internets since 2018.</p>
+</h1>
+</div>
+
+<!-- the following from Google's API documentation: https://developers.google.com/maps/documentation/javascript/earthquakes -->
+<div id="map"></div>
+
+<div class="container" align="center">
+  <table border=1 align=”center” class="table table-bordered">
+     <thead>
+        <td>Entry</td>
+        <td>Location</td>
+        <td>DNS Server</td>
+        <td>Created By</td>
+     </thead>
+
+     {% for row in rows %}
+        <tr>
+           <td>{{row["id"]}}</td>
+           <td>{{row["location"]}}</td>
+           <td>{{row["dnsserver"]}}</td>
+           <td>{{row["user"]}}</td>
+        </tr>
+     {% endfor %}
+  </table>
+
+<script>
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    center: {lat: 38.889931, lng: -77.009003},
+    styles:     [
+          {
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#212121"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.icon",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#212121"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.country",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#9e9e9e"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.land_parcel",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.locality",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#bdbdbd"
+              }
+            ]
+          },
+          {
+            "featureType": "poi",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#181818"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#616161"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#1b1b1b"
+              }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#2c2c2c"
+              }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#8a8a8a"
+              }
+            ]
+          },
+          {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#373737"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#3c3c3c"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#4e4e4e"
+              }
+            ]
+          },
+          {
+            "featureType": "road.local",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#616161"
+              }
+            ]
+          },
+          {
+            "featureType": "transit",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#000000"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#3d3d3d"
+              }
+            ]
+          }
+        ]
+  });
+  var script = document.createElement('script');
+
+  // This example uses a local copy of the GeoJSON stored at
+  // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+  script.src = 'http://127.0.0.1:5000/monitorjsonout';
+  document.getElementsByTagName('head')[0].appendChild(script);
+
+  google.maps.event.addListener(map.data,'click',function(mouseEvent) {
+    var clickedFeature = mouseEvent.feature,
+        timeProperty = clickedFeature.getProperty('Time'),
+        locProperty = clickedFeature.getProperty('Location'),
+        featureGeometry = clickedFeature.getGeometry(),
+        featurePosition = featureGeometry.get();
+
+    var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">'+locProperty+'</h1>'+
+        '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+      content: contentString
+      });
+      var marker = new google.maps.Marker({
+      position: featurePosition,
+      map: map,
+      });
+      infowindow.open(map, marker);
+      infowindow.addListener('closeclick', function() {
+      marker.setMap(null);
+      })
+      });
+}
+
+function eqfeed_callback(results) {
+  map.data.addGeoJson(results);
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=-YOUR-API-KEY-&callback=initMap">
+</script>
+</body>
+</html>

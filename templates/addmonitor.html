@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Keep it 100</title>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="600"> <!-- Refresh every 10 minutes -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.ico"></script>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link href="../static/main.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="jumbotron text-center">
+    <span id="leftlinks"><a id="linkspace" href="/">Current Status</a><a id="linkspace" href="/view">View Monitors</a><a id="linkspace" href="addmonitor">Add Monitor</a><a id="linkspace" href="delmonitor">Delete Monitor</a><a id="linkspace" href="details">Detailed Monitor</a><a id="linkspace" href="/about">About</a></span>
+        <h1>Keep it <img src="../static/hundred.png" class="img-fluid" alt="a hundred">
+    <p>Monitoring The Internets since 2018.</p>
+    </h1>
+  </div>
+  <div class="col-centered" id="locationField">
+    <form action="{{url_for('addstatus')}}" method="POST">
+     <input id="autocomplete" placeholder="Enter Location to Monitor" type="text" required></input>
+   <table id="address">
+     <tr>
+       <td class="label">City</td>
+       <td class="wideField" colspan="3"><input class="field" id="locality"
+             disabled="true" name="city"></input></td>
+     </tr>
+     <tr>
+       <td class="label">State</td>
+       <td class="wideField" colspan="3"><input class="field"
+             id="administrative_area_level_1" disabled="true" name="state"></input></td>
+     </tr>
+     <tr>
+       <td class="label">Country</td>
+       <td class="wideField" colspan="3"><input class="field"
+             id="country" disabled="true" name="country"></input></td>
+     </tr>
+     <tr>
+       <td class="label">DNS Server hostname</td>
+       <td class="wideField" colspan="3"><input class="field"
+             id="dnsserver" type="text" name="dnsserver" required></input></td>
+     </tr>
+   </table>
+     <button type="submit" class="btn btn-primary nugyel" id="submitbtn">Add Monitor</button>
+   </form>
+</div>
+   <script>
+
+     var placeSearch, autocomplete;
+     var componentForm = {
+       locality: 'long_name',
+       administrative_area_level_1: 'short_name',
+       country: 'long_name',
+     };
+
+     function initAutocomplete() {
+       // Create the autocomplete object, restricting the search to geographical
+       // location types.
+       autocomplete = new google.maps.places.Autocomplete(
+           /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+           {types: ['geocode']});
+
+       // When the user selects an address from the dropdown, populate the address
+       // fields in the form.
+       autocomplete.addListener('place_changed', fillInAddress);
+     }
+
+     function fillInAddress() {
+       // Get the place details from the autocomplete object.
+       var place = autocomplete.getPlace();
+
+       for (var component in componentForm) {
+         document.getElementById(component).value = '';
+         document.getElementById(component).disabled = false;
+       }
+
+       // Get each component of the address from the place details
+       // and fill the corresponding field on the form.
+       for (var i = 0; i < place.address_components.length; i++) {
+         var addressType = place.address_components[i].types[0];
+         if (componentForm[addressType]) {
+           var val = place.address_components[i][componentForm[addressType]];
+           document.getElementById(addressType).value = val;
+         }
+       }
+     }
+   </script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=-YOUR-API-KEY-&libraries=places&callback=initAutocomplete"
+       async defer></script>
+
+</body>
+</html>
