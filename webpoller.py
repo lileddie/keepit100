@@ -41,10 +41,10 @@ def webpoller():
         dnsserver=myResolver.nameservers[0]
         try:
             # Resove the FQDN we are testing
-            cdnip = myResolver.query('www.cbtnuggets.com', "A")
+            cdnip = myResolver.query('www.example.com', "A")
             edgeip = str(cdnip[0])
             # Send HTTP request to edge IP - ignoring SSL errors and sending the correct host header
-            r=requests.head('https://'+str(edgeip)+'/health.html',headers={'host': monitoredsite}, verify=False, timeout=5)
+            r=requests.head('https://'+str(edgeip)+'/health.html',headers={'host': 'www.example.com'}, verify=False, timeout=5)
         except:
             # IF failure - raise DNS flag
             dnserror = 1
