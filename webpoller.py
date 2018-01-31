@@ -71,7 +71,7 @@ def webpoller():
             loadtime="N/A"
             adjloadtime="N/A"
             results.add(polltime,location,dnsserver,str(edgeip),result,loadtime,adjloadtime,coordinates)
-    time.sleep(3)
+    time.sleep(30)
     # Database cleanup ; create json file
     rows = results.view()
     for row in rows:
